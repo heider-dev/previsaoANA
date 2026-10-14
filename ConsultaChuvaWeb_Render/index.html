@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Pluvia | Consulta de precipitação</title>
+<style>
+:root{--navy:#102a43;--blue:#1769aa;--cyan:#37c6d0;--ink:#172b4d;--muted:#65758b;--line:#e4ebf2;--bg:#f4f8fc;--white:#fff;--green:#16856b;--red:#b93838;--shadow:0 14px 40px rgba(16,42,67,.08)}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--ink)}
+.hero{background:linear-gradient(115deg,#102a43 0%,#155c8c 65%,#177f9b 100%);color:#fff;padding:30px max(24px,calc((100vw - 1240px)/2)) 76px;position:relative;overflow:hidden}
+.hero:after{content:"";position:absolute;width:340px;height:340px;border:1px solid #ffffff20;border-radius:50%;right:7%;top:-180px;box-shadow:0 0 0 34px #ffffff09,0 0 0 70px #ffffff06}
+.topline{display:flex;justify-content:space-between;align-items:center;gap:16px;position:relative;z-index:1}.brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.2px}.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,#56e0d3,#2494d0);display:grid;place-items:center;color:#0b304a;font-size:23px;box-shadow:0 7px 20px #0002}.status{font-size:12px;color:#d9f9f4;border:1px solid #ffffff38;border-radius:99px;padding:8px 12px;display:flex;align-items:center;gap:8px}.dot{width:7px;height:7px;background:#5ce0ba;border-radius:50%}.intro{position:relative;z-index:1;margin-top:38px;max-width:720px}.eyebrow{text-transform:uppercase;letter-spacing:2px;font-size:11px;font-weight:800;color:#7fe4e0}.intro h1{font-size:clamp(29px,4vw,42px);line-height:1.12;letter-spacing:-1.3px;margin:12px 0}.intro p{color:#d6e7f2;line-height:1.6;margin:0;max-width:640px}
+main{max-width:1240px;margin:-45px auto 50px;padding:0 24px;position:relative;z-index:2}.panel{background:var(--white);border:1px solid #e7edf4;border-radius:20px;box-shadow:var(--shadow);padding:24px}.panel-title{display:flex;align-items:center;gap:10px;font-size:17px;font-weight:800;margin-bottom:20px}.panel-title .mini{background:#e9f7fa;color:#167ca0;border-radius:10px;width:32px;height:32px;display:grid;place-items:center}
+.fields{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:16px}.field label{display:block;font-size:12px;font-weight:750;color:#52657a;margin:0 0 8px}.field input{width:100%;border:1px solid #d6e0eb;border-radius:10px;padding:12px 13px;font:inherit;color:var(--ink);outline:none;background:#fbfdff;transition:.15s}.field input:focus{border-color:#2798c2;box-shadow:0 0 0 3px #2798c21c}.hint{font-size:11px;color:#8795a7;margin-top:6px}.actions{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:21px}.btn{border:0;border-radius:10px;padding:11px 17px;font:700 13px inherit;font-size:13px;font-weight:750;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:transform .12s,opacity .12s}.btn:hover{transform:translateY(-1px)}.btn:disabled{opacity:.55;cursor:wait;transform:none}.primary{color:#fff;background:linear-gradient(100deg,#1769aa,#138ea4);box-shadow:0 5px 14px #1769aa2b}.secondary{background:#f0f5f9;color:#38516a;border:1px solid #e0e8f0}.export{background:#e8f7f2;color:#14795f;border:1px solid #cceee3}.actions-note{font-size:12px;color:var(--muted);margin-left:auto}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}.stat{padding:19px 20px;border-radius:16px;background:#fff;border:1px solid var(--line);box-shadow:0 5px 18px #102a4307;min-width:0}.stat-head{display:flex;align-items:center;justify-content:space-between;color:#63758a;font-size:12px;font-weight:700}.stat-icon{width:31px;height:31px;border-radius:10px;background:#e8f6fb;color:#1681a4;display:grid;place-items:center;font-size:16px}.stat strong{display:block;font-size:28px;letter-spacing:-.8px;margin-top:12px;color:#163b5a}.stat small{font-size:11px;color:#8795a7}
+.results{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:0 6px 25px #102a4306;overflow:hidden}.results-head{padding:20px 22px;display:flex;align-items:center;justify-content:space-between;gap:16px;border-bottom:1px solid var(--line)}.results-head h2{font-size:16px;margin:0 0 4px}.results-head p{font-size:12px;color:var(--muted);margin:0}.searchbox{position:relative;max-width:260px;width:100%}.searchbox input{width:100%;padding:10px 12px 10px 34px;border:1px solid var(--line);border-radius:9px;font:inherit;font-size:12px;outline:none}.searchbox span{position:absolute;left:11px;top:9px;color:#8394a6}.tablewrap{overflow:auto;max-height:480px}table{border-collapse:collapse;width:100%;min-width:650px}thead th{position:sticky;top:0;background:#f6f9fc;color:#64758a;text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.6px;padding:14px 22px;border-bottom:1px solid var(--line);white-space:nowrap}th button{background:none;border:0;color:inherit;font:inherit;text-transform:inherit;letter-spacing:inherit;cursor:pointer;padding:0}tbody td{padding:14px 22px;border-bottom:1px solid #edf1f5;font-size:13px}tbody tr:hover{background:#f8fbfd}tbody tr:last-child td{border-bottom:0}.station-tag{font-weight:750;color:#1b648d;background:#eaf5fb;padding:5px 8px;border-radius:7px;font-size:11px}.rain{font-weight:800;color:#12795e}.empty{padding:45px 20px;text-align:center;color:#7b8da0}.empty .cloud{font-size:32px;margin-bottom:12px}.empty strong{display:block;color:#40566c;font-size:14px;margin-bottom:6px}.empty p{font-size:12px;margin:0;line-height:1.5}.alert{margin:14px 0 0;padding:13px 15px;border-radius:11px;font-size:13px;line-height:1.45;display:none}.alert.error{display:block;background:#fff1f0;border:1px solid #ffd8d4;color:#a52e2e}.alert.info{display:block;background:#edf8fc;border:1px solid #cdebf5;color:#176783}.loading{display:inline-block;width:14px;height:14px;border:2px solid #ffffff70;border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.footer{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;color:#8997a7;font-size:11px;margin:20px 2px}.footer a{color:#287ca3;text-decoration:none}
+@media(max-width:760px){.hero{padding:22px 20px 70px}.topline{align-items:flex-start}.status{font-size:10px}.intro{margin-top:30px}main{padding:0 14px}.panel{padding:18px}.fields{grid-template-columns:1fr}.stats{grid-template-columns:1fr}.stat{padding:15px}.stat strong{font-size:24px}.results-head{align-items:flex-start;flex-direction:column}.searchbox{max-width:none}.actions-note{margin-left:0;width:100%}}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="topline">
+    <div class="brand"><div class="logo">⌁</div><span>PLUVIA <span style="font-weight:500;opacity:.7">/ ANA</span></span></div>
+    <div class="status"><span class="dot"></span> Consulta de dados pluviométricos</div>
+  </div>
+  <div class="intro">
+    <div class="eyebrow">Monitoramento hidrológico</div>
+    <h1>Chuva em dados.<br>Decisões com confiança.</h1>
+    <p>Consulte os registros de precipitação de uma estação, acompanhe o acumulado do período e exporte os resultados para análise.</p>
+  </div>
+</header>
+<main>
+  <section class="panel" aria-labelledby="form-title">
+    <div class="panel-title" id="form-title"><span class="mini">⌕</span> Parâmetros da consulta</div>
+    <form id="queryForm">
+      <div class="fields">
+        <div class="field"><label for="station">Código da estação</label><input id="station" inputmode="numeric" autocomplete="off" maxlength="10" value="65060001" placeholder="Ex.: 65060001" required><div class="hint">Somente números</div></div>
+        <div class="field"><label for="start">Data inicial</label><input id="start" type="date" required><div class="hint">Início do período desejado</div></div>
+        <div class="field"><label for="end">Data final</label><input id="end" type="date" required><div class="hint">Não pode ser anterior à data inicial</div></div>
+      </div>
+      <div class="actions">
+        <button class="btn primary" id="submitBtn" type="submit"><span>⌕</span> Consultar dados</button>
+        <button class="btn secondary" id="clearBtn" type="button">↺ Limpar</button>
+        <button class="btn export" id="exportBtn" type="button" disabled>↓ Exportar CSV</button>
+        <span class="actions-note">Fonte: Serviço Hidrológico da ANA</span>
+      </div>
+    </form>
+    <div id="alert" class="alert" role="status" aria-live="polite"></div>
+  </section>
+
+  <section class="stats" aria-label="Resumo do período">
+    <div class="stat"><div class="stat-head">Precipitação acumulada <span class="stat-icon">☂</span></div><strong id="total">— <small>mm</small></strong><small>Soma dos registros exibidos</small></div>
+    <div class="stat"><div class="stat-head">Registros encontrados <span class="stat-icon">▤</span></div><strong id="count">—</strong><small>Linhas retornadas pela consulta</small></div>
+    <div class="stat"><div class="stat-head">Maior registro <span class="stat-icon">↗</span></div><strong id="maximum">— <small>mm</small></strong><small id="maxDate">Maior precipitação individual</small></div>
+  </section>
+
+  <section class="results" aria-labelledby="results-title">
+    <div class="results-head">
+      <div><h2 id="results-title">Registros de precipitação</h2><p id="tableSubtitle">Os resultados da consulta aparecerão aqui.</p></div>
+      <div class="searchbox"><span>⌕</span><input id="filter" type="search" placeholder="Filtrar resultados..." aria-label="Filtrar resultados" disabled></div>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr>
+          <th><button data-sort="station">Estação ↕</button></th>
+          <th><button data-sort="date">Data ↕</button></th>
+          <th><button data-sort="time">Hora ↕</button></th>
+          <th><button data-sort="rain">Precipitação (mm) ↕</button></th>
+        </tr></thead>
+        <tbody id="tbody"><tr><td colspan="4"><div class="empty"><div class="cloud">☁</div><strong>Aguardando consulta</strong><p>Informe a estação e o período para visualizar os registros.</p></div></td></tr></tbody>
+      </table>
+    </div>
+  </section>
+  <div class="footer"><span>Pluvia • Projeto acadêmico de Qualidade de Software</span><span>Dados sujeitos à disponibilidade e atualização da ANA · <a href="https://www.ana.gov.br/hidrowebservice/swagger-ui/index.html" target="_blank" rel="noreferrer">Documentação da API</a></span></div>
+</main>
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const form = $("queryForm"), station = $("station"), start = $("start"), end = $("end");
+  const submitBtn = $("submitBtn"), clearBtn = $("clearBtn"), exportBtn = $("exportBtn");
+  const alertBox = $("alert"), tbody = $("tbody"), filter = $("filter");
+  const today = new Date();
+  const isoToday = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,"0")}-${String(today.getDate()).padStart(2,"0")}`;
+  start.value = isoToday; end.value = isoToday; start.max = isoToday; end.max = isoToday;
+  let rows = [], visibleRows = [], sortKey = "date", sortDir = 1, lastStation = "";
+
+  function showAlert(message, kind="info") {
+    alertBox.textContent = message;
+    alertBox.className = `alert ${kind}`;
+  }
+  function hideAlert() { alertBox.textContent=""; alertBox.className="alert"; }
+  function fmt(n) { return Number(n).toLocaleString("pt-BR",{minimumFractionDigits:2,maximumFractionDigits:2}); }
+  function esc(s) { return String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+  function blankTable(title="Aguardando consulta", msg="Informe a estação e o período para visualizar os registros.") {
+    tbody.innerHTML = `<tr><td colspan="4"><div class="empty"><div class="cloud">☁</div><strong>${esc(title)}</strong><p>${esc(msg)}</p></div></td></tr>`;
+  }
+  function updateStats(list) {
+    const valid = list.filter(r => Number.isFinite(r.rain));
+    const total = valid.reduce((sum,r)=>sum+r.rain,0);
+    $("total").innerHTML = `${fmt(total)} <small>mm</small>`;
+    $("count").textContent = list.length.toLocaleString("pt-BR");
+    const max = valid.reduce((best,r)=>!best || r.rain>best.rain ? r : best,null);
+    $("maximum").innerHTML = max ? `${fmt(max.rain)} <small>mm</small>` : `— <small>mm</small>`;
+    $("maxDate").textContent = max ? `Registrado em ${max.dateDisplay} às ${max.time}` : "Sem valores numéricos disponíveis";
+  }
+  function render() {
+    const q = filter.value.trim().toLocaleLowerCase("pt-BR");
+    visibleRows = rows.filter(r => [r.station,r.dateDisplay,r.time,r.rain == null ? "" : String(r.rain)].join(" ").toLocaleLowerCase("pt-BR").includes(q));
+    visibleRows.sort((a,b)=>{
+      let av=a[sortKey], bv=b[sortKey];
+      if(sortKey==="rain"){av=av==null?-Infinity:av;bv=bv==null?-Infinity:bv;return (av-bv)*sortDir;}
+      return String(av??"").localeCompare(String(bv??""),"pt-BR",{numeric:true})*sortDir;
+    });
+    if (!visibleRows.length) {
+      blankTable(rows.length ? "Nenhum resultado para esse filtro" : "Nenhum registro encontrado", rows.length ? "Tente outro termo de busca." : "data nao constaa nos dados ou ainda nao tem previsão desses dados");
+    } else {
+      tbody.innerHTML = visibleRows.map(r=>`<tr><td><span class="station-tag">${esc(r.station)}</span></td><td>${esc(r.dateDisplay)}</td><td>${esc(r.time)}</td><td class="rain">${r.rain==null?"—":fmt(r.rain)}</td></tr>`).join("");
+    }
+    updateStats(rows);
+    $("tableSubtitle").textContent = `${visibleRows.length} de ${rows.length} registro(s)${lastStation ? " • Estação "+lastStation : ""}`;
+    exportBtn.disabled = visibleRows.length===0;
+    filter.disabled = rows.length===0;
+  }
+  function resetResults() {
+    rows=[]; visibleRows=[]; lastStation=""; filter.value=""; filter.disabled=true; exportBtn.disabled=true;
+    $("total").innerHTML='— <small>mm</small>'; $("count").textContent="—"; $("maximum").innerHTML='— <small>mm</small>'; $("maxDate").textContent="Maior precipitação individual";
+    $("tableSubtitle").textContent="Os resultados da consulta aparecerão aqui.";
+    blankTable(); hideAlert();
+  }
+  form.addEventListener("submit", async event => {
+    event.preventDefault(); hideAlert();
+    const code=station.value.trim(), from=start.value, to=end.value;
+    if(!/^\d{1,10}$/.test(code)){showAlert("Informe um código de estação válido, usando apenas números.","error");station.focus();return;}
+    if(!from||!to){showAlert("Preencha a data inicial e a data final.","error");return;}
+    if(from>to){showAlert("A data inicial não pode ser posterior à data final.","error");return;}
+    if(from>isoToday||to>isoToday){showAlert("data nao constaa nos dados ou ainda nao tem previsão desses dados","error");return;}
+    submitBtn.disabled=true; submitBtn.innerHTML='<span class="loading"></span> Consultando...';
+    try {
+      const url=`/api/consulta?${new URLSearchParams({estacao:code,inicio:from,fim:to})}`;
+      const response=await fetch(url,{headers:{Accept:"application/json"}});
+      let data;
+      try { data=await response.json(); } catch { throw new Error("O servidor retornou uma resposta inválida."); }
+      if(!response.ok) throw new Error(data.error || "Não foi possível concluir a consulta.");
+      rows=Array.isArray(data.rows)?data.rows:[]; lastStation=code; filter.value="";
+      if(!rows.length) {
+        resetResults();
+        showAlert("data nao constaa nos dados ou ainda nao tem previsão desses dados","info");
+        blankTable("Nenhum registro disponível","data nao constaa nos dados ou ainda nao tem previsão desses dados");
+      } else {
+        render(); showAlert("Consulta concluída. Confira os registros e o acumulado do período.","info");
+      }
+    } catch(err) {
+      resetResults();
+      showAlert(err instanceof TypeError ? "Não foi possível acessar o servidor local. Inicie o aplicativo pelo arquivo INICIAR_NO_WINDOWS.bat." : (err.message || "Ocorreu um erro inesperado."),"error");
+    } finally {
+      submitBtn.disabled=false; submitBtn.innerHTML="<span>⌕</span> Consultar dados";
+    }
+  });
+  clearBtn.addEventListener("click",()=>{form.reset();start.value=isoToday;end.value=isoToday;resetResults();station.focus();});
+  filter.addEventListener("input",render);
+  document.querySelectorAll("[data-sort]").forEach(btn=>btn.addEventListener("click",()=>{
+    const key=btn.dataset.sort;
+    if(sortKey===key) sortDir*=-1; else {sortKey=key;sortDir=1;}
+    render();
+  }));
+  exportBtn.addEventListener("click",()=>{
+    if(!visibleRows.length)return;
+    const quote=v=>`"${String(v??"").replace(/"/g,'""')}"`;
+    const csv=["Código da estação;Data;Hora;Precipitação (mm)",...visibleRows.map(r=>[r.station,r.dateDisplay,r.time,r.rain==null?"":String(r.rain).replace(".",",")].map(quote).join(";"))].join("\r\n");
+    const blob=new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8;"});
+    const link=document.createElement("a"), objectUrl=URL.createObjectURL(blob);
+    link.href=objectUrl;link.download=`precipitacao_${lastStation}_${start.value}_${end.value}.csv`;document.body.appendChild(link);link.click();link.remove();URL.revokeObjectURL(objectUrl);
+  });
+})();
+</script>
+</body></html>
